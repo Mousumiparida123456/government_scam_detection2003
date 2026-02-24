@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Government Scam Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Government Scam Detection System</h1>
+    <p class="subtitle">AI-Powered URL Safety & Phishing Detection</p>
+
+    <form method="POST">
+        <input type="text" name="url" placeholder="Enter suspicious URL" required>
+        <button type="submit">Analyze URL</button>
+    </form>
+
+    {% if result %}
+
+        {% set risk_class = "low" %}
+        {% if "High Risk" in result %}
+            {% set risk_class = "high" %}
+        {% elif "Suspicious" in result %}
+            {% set risk_class = "medium" %}
+        {% endif %}
+
+        <div class="result {{ risk_class }}">
+            <h2>{{ result }}</h2>
+            <p>ML Scam Probability: {{ probability }}%</p>
+
+            <div class="risk-bar">
+                <div class="risk-fill" style="width: {{ probability }}%;"></div>
+            </div>
+
+            <ul>
+                {% for reason in reasons %}
+                    <li>{{ reason }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    {% endif %}
+</div>
+
+</body>
+</html>
